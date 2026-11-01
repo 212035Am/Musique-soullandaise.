@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musique Pétanque Soullandaise</title>
+
+<style>
+body {
+  margin:0;
+  padding:20px;
+  background:#f2f4f6;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  color:#222;
+}
+
+.lecteur {
+  max-width:430px;
+  margin:15px auto;
+  padding:25px 18px;
+  background:white;
+  border:2px solid #ccc;
+  border-radius:18px;
+  box-shadow:0 4px 16px #0002;
+}
+
+h2 {
+  font-size:22px;
+}
+
+button {
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  color:white;
+  font-size:19px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+#bouton {
+  background:#198754;
+}
+
+#bouton.arret {
+  background:#dc3545;
+}
+
+#retour {
+  background:#0d6efd;
+}
+
+.volume {
+  margin-top:22px;
+  text-align:left;
+}
+
+input[type=range] {
+  width:100%;
+}
+
+.note {
+  font-size:13px;
+  color:#666;
+  line-height:1.5;
+  margin-top:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="lecteur">
+
+<h2>🎵 MUSIQUE DU CLUB</h2>
+
+<p>Pétanque Soullandaise — Sur le Terrain</p>
+
+<button id="bouton" type="button">
+▶ MARCHE
+</button>
+
+<div class="volume">
+
+<label>
+Volume : <span id="valeur">25 %</span>
+</label>
+
+<input
+id="volume"
+type="range"
+min="0"
+max="1"
+step="0.05"
+value="0.25">
+
+</div>
+
+<button id="retour" type="button">
+↩ RETOUR À KALISPORT
+</button>
+
+<p class="note">
+La musique continue en boucle.
+Ne fermez pas cet onglet pour conserver la lecture.
+</p>
+
+<audio id="audio" loop preload="none">
+<source
+src="https://1drv.ms/u/c/e69ed872571da8ac/IQTNvSU1Ph5lSoD-4-Mr5nkeASxPlOAKDPEbXIMw-raM-EY"
+type="audio/mpeg">
+</audio>
+
+</div>
+
+<script>
+
+(function() {
+
+const audio = document.getElementById("audio");
+const bouton = document.getElementById("bouton");
+const retour = document.getElementById("retour");
+const volume = document.getElementById("volume");
+const valeur = document.getElementById("valeur");
+
+audio.volume = 0.25;
+
+function afficher(enLecture) {
+  bouton.textContent = enLecture ? "⏹ ARRÊT" : "▶ MARCHE";
+  bouton.classList.toggle("arret", enLecture);
+}
+
+bouton.addEventListener("click", function() {
+
+  if (!audio.paused) {
+    audio.pause();
+    audio.currentTime = 0;
+    afficher(false);
+  } else {
+    audio.play().then(function() {
+      afficher(true);
+    }).catch(function() {
+      alert("Lecture impossible. Vérifiez le lien OneDrive.");
+    });
+  }
+
+});
+
+volume.addEventListener("input", function() {
+  audio.volume = Number(volume.value);
+  valeur.textContent = Math.round(audio.volume * 100) + " %";
+});
+
+audio.addEventListener("play", function() {
+  afficher(true);
+});
+
+audio.addEventListener("pause", function() {
+  afficher(false);
+});
+
+retour.addEventListener("click", function() {
+  window.location.href = "https://petanquesoullandaise.fr";
+});
+
+afficher(false);
+
+})();
+
+</script>
+
+</body>
+</html>
